@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$BASH_SOURCE")"/..
+
+bin/build-deps
+
+bin/build-css
+
+bin/build-js

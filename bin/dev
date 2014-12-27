@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$BASH_SOURCE")"/..
+
+source etc/env.sh
+
+# css
+node lib/watch.js .\
+  | grep --line-buffered -e '.*\.less'\
+  | grep --line-buffered -v -e '.*build\.less'\
+  | while read file; do
+    echo "css changed: $file"
+    bin/build-css
+  done &
+
+# js
+node lib/watch.js .\
+  | grep --line-buffered -e '.*\.js' -e '.*\.html'\
+  | grep --line-buffered -v\
+         -e 'share/build\.js'\
+         -e 'src/server\.js'\
+         -e 'node_modules/.*'\
+  | while read file; do
+    echo "client js changed: $file"
+    bin/build-js
+  done &
+
+# http server
+node src/server.js &
+
+# wait for bg jobs
+wait

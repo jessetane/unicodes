@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$BASH_SOURCE")"/..
+
+source etc/env.sh
+
+bin/build
+
+node src/app.js

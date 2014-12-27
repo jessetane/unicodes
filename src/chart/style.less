@@ -1,0 +1,56 @@
+.chart {
+  position: absolute;
+  top: 0;
+  width: 66.66%;
+  height: 100%;
+  padding-top: 6%;
+  padding-left: 6%;
+  padding-right: 0;
+  padding-bottom: 6%;
+  overflow: scroll;
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    .code-point {
+      display: inline-block;
+      vertical-align: middle;
+      border: 1px solid #EEE;
+      margin-left: -1px;
+      margin-top: -1px;
+      text-align: center;
+
+      &:hover {
+        border: 1px solid #CCC;
+        z-index: 1;
+        position: relative;
+      }
+
+      a {
+        display: block;
+        width: 100%;
+        height: 100%;
+
+        > div {
+          position: relative;
+          top: 50%;
+          transform: translateY(-50%);
+          -webkit-transform: translateY(-50%);
+        }
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      font-size: 30px;
+      height: 120px;
+      width: 33.33%;
+      @media only screen and (min-width: 768px)  {
+        width: 12.5%;
+        font-size: 56px;
+      }
+    }
+  }
+}

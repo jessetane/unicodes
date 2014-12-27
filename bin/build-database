@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var mkdirp = require('mkdirp');
+var db = require('../src/database');
+
+db('http://www.unicode.org/Public/UNIDATA/NamesList.txt', function(err, db) {
+  if (err) throw err;
+
+  mkdirp.sync(__dirname + '/../share/database');
+
+  fs.writeFileSync(__dirname + '/../share/database/planes.json', JSON.stringify(db.planes), 'utf8');
+  fs.writeFileSync(__dirname + '/../share/database/planes-search.json', JSON.stringify(db.planes_search), 'utf8');
+  fs.writeFileSync(__dirname + '/../share/database/points.json', JSON.stringify(db.points), 'utf8');
+  fs.writeFileSync(__dirname + '/../share/database/points-search.json', JSON.stringify(db.points_search), 'utf8');
+});

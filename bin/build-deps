@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$BASH_SOURCE")"/..
+
+source etc/env.sh
+
+npm install
+
+if [ -d share/database ]; then
+  bin/build-database
+fi
