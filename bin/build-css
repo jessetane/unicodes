@@ -32,7 +32,7 @@ find . -name "*utilities.less"\
 
 # compile
 if [ "$NODE_ENV" = "production" ]; then
-  lessc -x tmp/build.less share/build.css
+  lessc -x tmp/build.less | autoprefixer > share/build.css
 else
-  lessc --source-map-map-inline tmp/build.less share/build.css
+  lessc --source-map-map-inline tmp/build.less | autoprefixer > share/build.css
 fi

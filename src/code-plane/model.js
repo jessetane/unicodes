@@ -1,108 +1,39 @@
-var lunr = require('lunr');
-var queue = require('queue');
-var merge = require('merge').recursive;
-var request = require('../../lib/request');
-var database = require('../database');
+var inherits = require('inherits');
+
+var Model = require('../../lib/model.js');
+var Database = require('../database');
+
+var db = new Database({ url: window.location.origin + '/NamesList.txt' });
 
 module.exports = window.CodePlane = CodePlane;
 
-var cache = CodePlane.cache = {
-  collection: null,
-  search: null,
-};
-
-function CodePlane(instance) {
-  merge(this, instance);
+function CodePlane(attributes) {
+  Model.call(this, attributes);
 }
+inherits(CodePlane, Model);
 
-CodePlane.get = function(id) {
-  return cache.collection[id];
-};
-
-CodePlane.read = function(cb) {
-  if (cache.collection)
-    return cb && cb(null, cache.collection);
-
-  var q = queue();
-  q.push(getPlanes);
-  q.push(getSearch);
-  // q.push(readPlanes);
-  // q.push(readSearch);
-  q.start(function(err) {
-    if (err)
-      return cb && cb(err);
-
-    cb && cb(null, cache.collection);
-  });
-};
-
-function getPlanes(cb) {
-  database(window.location.origin + '/NamesList.txt', function(err, db) {
+CodePlane.findByPoint = function(point, cb) {
+  db.read('planes', function(err, planes) {
     if (err) return cb(err);
-    cache.collection = db.planes;
-    cb();
-  });
-}
 
-function getSearch(cb) {
-  database(window.location.origin + '/NamesList.txt', function(err, db) {
-    if (err) return cb(err);
-    cache.search = db.planes_search;
-    cb();
-  });
-}
-
-function readPlanes(cb) {
-  request(window.location.origin + '/database/planes.json', function(err, data) {
-    if (err)
-      return cb(err);
-
-    var i = null;
-    var plane = null;
-    var planes = JSON.parse(data);
-
-    cache.collection = {};
+    var i, plane;
 
     for (i in planes) {
       plane = planes[i];
-      cache.collection[plane.id] = new CodePlane(plane);
+      if (point >= plane.start &&
+          point <= plane.end) {
+        break;
+      }
     }
 
-    cb();
-  });
-}
-
-function readSearch(cb) {
-  request(window.location.origin + '/database/planes-search.json', function(err, data) {
-    if (err)
-      return cb(err);
-
-    cache.search = lunr.Index.load(JSON.parse(data.toString()));
-    cb();
-  });
-}
-
-CodePlane.search = function(query, cb) {
-  CodePlane.read(function(err) {
-    if (err)
-      return cb && cb(err);
-
-    var results = cache.search.search(query)
-      .map(function(result) {
-        return cache.collection[result.ref];
-      });
-
-    cb && cb(null, results);
+    cb(null, plane);
   });
 };
 
-CodePlane.prototype.read = function(cb) {
-  var self = this;
-  CodePlane.read(function(err) {
-    if (err)
-      return cb && cb(err);
+CodePlane.search = function(query, cb) {
+  db.search('planes', query, Model.onsearch.bind(CodePlane, cb));
+};
 
-    merge(self, cache.collection[self.id]);
-    cb && cb(null, self);
-  });
+CodePlane.prototype.read = function(cb) {
+  db.read('planes', this.id, this.onread.bind(this, cb));
 };

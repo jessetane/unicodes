@@ -1,0 +1,30 @@
+.search-input {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 4;
+
+  form {
+    width: 100%;
+
+    input {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      padding-left: 20px;
+      padding-right: 20px;
+      line-height: 70px;
+      border: none;
+      font-size: 24px;
+      text-align: center;
+      color: #444;
+      box-shadow: inset 0 4px 4px -4px rgba(0,0,0,0.2);
+      letter-spacing: 1px;
+
+      &::-webkit-input-placeholder {
+        color: #CCC;
+        font-weight: lighter;
+      }
+    }
+  }
+}

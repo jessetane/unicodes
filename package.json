@@ -6,18 +6,22 @@
     "unicode-gui": "./bin/unicode-gui"
   },
   "dependencies": {
+    "autoprefixer": "^4.0.0",
     "browserify": "^8.0.2",
     "chokidar": "^0.12.5",
     "concat-stream": "^1.4.7",
     "ecstatic": "^0.5.8",
+    "fastclick": "^1.0.3",
     "hyperglue2": "^1.1.0",
     "hyperquest": "^1.0.1",
+    "inherits": "^2.0.1",
     "less": "^2.1.0",
     "localforage": "^1.2.0",
     "lunr": "^0.5.7",
     "merge": "^1.2.0",
     "mkdirp": "^0.5.0",
     "queue": "^3.0.10",
+    "scroll": "0.0.3",
     "txtify2": "^2.0.0"
   },
   "browserify": {

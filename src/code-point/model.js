@@ -1,110 +1,38 @@
-var lunr = require('lunr');
-var queue = require('queue');
-var merge = require('merge').recursive;
-var request = require('../../lib/request');
-var database = require('../database');
+var inherits = require('inherits');
+
+var Model = require('../../lib/model.js');
+var Database = require('../database');
 var CodePlane = require('../code-plane/model');
+
+var db = new Database({ url: window.location.origin + '/NamesList.txt' });
 
 module.exports = window.CodePoint = CodePoint;
 
-var cache = CodePoint.cache = {
-  collection: null,
-  search: null,
+CodePoint.relationships = {
+  plane: CodePlane,
 };
 
-function CodePoint(instance) {
-  merge(this, instance);
+function CodePoint(attributes) {
+  Model.call(this, attributes);
 }
-
-CodePoint.get = function(id) {
-  return cache.collection[id];
-};
-
-CodePoint.read = function(cb) {
-  if (cache.collection)
-    return cb && cb(null, cache.collection);
-
-  var q = queue();
-  q.push(CodePlane.read);
-  q.push(getPoints);
-  q.push(getSearch);
-  // q.push(readPoints);
-  // q.push(readSearch);
-  q.start(function(err) {
-    if (err)
-      return cb && cb(err);
-
-    cb && cb(null, cache.collection);
-  });
-};
-
-function getPoints(cb) {
-  database(window.location.origin + '/NamesList.txt', function(err, db) {
-    if (err) return cb(err);
-    cache.collection = db.points;
-    cb();
-  });
-}
-
-function getSearch(cb) {
-  database(window.location.origin + '/NamesList.txt', function(err, db) {
-    if (err) return cb(err);
-    cache.search = db.points_search;
-    cb();
-  });
-}
-
-function readPoints(cb) {
-  request(window.location.origin + '/database/points.json', function(err, data) {
-    if (err)
-      return cb(err);
-
-    var i = null;
-    var point = null;
-    var points = JSON.parse(data);
-    
-    cache.collection = {};
-
-    for (i in points) {
-      point = points[i];
-      cache.collection[point.id] = new CodePoint(point);
-    }
-    
-    cb();
-  });
-}
-
-function readSearch(cb) {
-  request(window.location.origin + '/database/points-search.json', function(err, data) {
-    if (err)
-      return cb(err);
-    
-    cache.search = lunr.Index.load(JSON.parse(data.toString()));
-    cb();
-  });
-}
+inherits(CodePoint, Model);
 
 CodePoint.search = function(query, cb) {
-  CodePoint.read(function(err) {
-    if (err)
-      return cb && cb(err);
+  var self = this;
+  db.search('points', query, function(err, results) {
+    var total = results.length;
+    if (total > 100)
+      results = results.slice(0, 100);
 
-    var results = cache.search.search(query)
-      .map(function(result) {
-        return cache.collection[result.ref];
-      });
-
-    cb && cb(null, results);
+    Model.onsearch.call(CodePoint, cb, err, results, total);
   });
 };
 
 CodePoint.prototype.read = function(cb) {
   var self = this;
-  CodePoint.read(function(err) {
-    if (err)
-      return cb && cb(err);
-
-    merge(self, cache.collection[self.id]);
-    cb && cb(null, self);
+  CodePlane.findByPoint(this.id, function(err, plane) {
+    if (err) return cb(err);
+    self.plane = plane.id;
+    db.read('points', self.id, self.onread.bind(self, cb));
   });
 };

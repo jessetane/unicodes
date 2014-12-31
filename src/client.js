@@ -1,22 +1,25 @@
 var router = require('uri-router');
-var CodePoint = require('./code-point/model');
 
-var t = performance.now();
-CodePoint.read(function(err) {
-  console.log('~~~', performance.now() - t);
+router({
+  watch: 'hash',
+  outlet: '.chart',
+  routes: { '.*': require('./chart') }
+});
 
-  if (err)
-    console.warn(err);
+router({
+  watch: 'search',
+  outlet: '.search-results',
+  routes: { '.*': require('./search-results') }
+});
 
-  router({
-    watch: 'hash',
-    outlet: '.form',
-    routes: { '.*': require('./form') }
-  });
+router({
+  watch: 'hash',
+  outlet: '.info',
+  routes: { '.*': require('./info') }
+});
 
-  router({
-    watch: 'hash',
-    outlet: '.chart',
-    routes: { '.*': require('./chart') }
-  });
+router({
+  watch: 'search',
+  outlet: '.search-input',
+  routes: { '.*': require('./search-input') }
 });
