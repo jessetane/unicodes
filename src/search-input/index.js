@@ -1,7 +1,6 @@
 var hg = require('hyperglue2');
 var router = require('uri-router');
 var template = require('./template.html');
-var blur = require('../../lib/stack-box-blur');
 
 module.exports = SearchInput;
 
