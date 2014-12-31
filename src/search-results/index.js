@@ -9,10 +9,17 @@ module.exports = SearchResults;
 SearchResults.reuse = true;
 
 function SearchResults() {
-  this.el = hg(template);
+  var el = this.el = hg(template);
+
   this.el.addEventListener('click', function(evt) {
     if (evt.target.className === 'close-btn') {
-      router.search({ q: null });
+      el.parentNode.classList.remove('show');
+      el.parentNode.addEventListener('transitionend', clear);
+
+      function clear() {
+        el.parentNode.removeEventListener('transitionend', clear);
+        router.search({ q: null });
+      }
     }
   });
 }

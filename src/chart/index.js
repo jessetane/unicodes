@@ -28,7 +28,14 @@ inherits(ChartView, TableView);
 ChartView.prototype.show = function() {
   var self = this;
   var hash = window.location.hash.replace(/^#/, '');
-  var point = this.selection = Math.abs(parseInt(hash, 16));
+  var point = this.selected = Math.abs(parseInt(hash, 16));
+  var lastselected = this.el.querySelector('.code-point.selected');
+  var nextselected = this.el.querySelector('.code-point a[href="#' + hash + '"]');
+
+  if (lastselected)
+    lastselected.classList.remove('selected');
+  if (nextselected)
+    nextselected.parentNode.classList.add('selected');
 
   this.resize();
   this.update();
@@ -56,7 +63,7 @@ ChartView.prototype.resize = function(evt) {
   }
   this.colCount = breakPoint.cols;
   this.colWidth = Math.round(this.content.offsetWidth / this.colCount);
-  this.rowCount = Math.ceil(0x1FFFF / this.colCount);
+  this.rowCount = Math.ceil(0x10FFFF / this.colCount);
   this.rowHeight = breakPoint.rowHeight;
 };
 
@@ -65,10 +72,13 @@ ChartView.prototype.rowAtIndex = function(index) {
   row.classList.add('row');
   var cols = this.colCount;
   var colWidth = this.colWidth;
-  var firstPoint = index * this.colCount;
+  var i, p, point, firstPoint = index * this.colCount;
 
-  for (var i = 0; i < cols; i++) {
-    var point = new PointView(firstPoint + i);
+  for (i = 0; i < cols; i++) {
+    p = firstPoint + i;
+    point = new PointView(p);
+    if (p === this.selected)
+      point.el.classList.add('selected');
     row.appendChild(point.el);
   }
 

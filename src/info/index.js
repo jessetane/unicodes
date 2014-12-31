@@ -16,7 +16,13 @@ function InfoView() {
   el.addEventListener('input', this.oninput.bind(this));
   el.addEventListener('click', function(evt) {
     if (evt.target.className === 'close-btn') {
-      window.location.hash = '';
+      el.parentNode.classList.remove('show');
+      el.parentNode.addEventListener('transitionend', clear);
+
+      function clear() {
+        el.parentNode.removeEventListener('transitionend', clear);
+        window.location.hash = '';
+      }
     }
   });
 }

@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
+npm-debug.log
 *.css
 build.*
 share/database
+share/disc.html
 etc/env.sh
