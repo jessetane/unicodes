@@ -3,6 +3,8 @@ var merge = require('merge').recursive;
 var request = require('../lib/request');
 var localStorage = require('localforage');
 
+localStorage.config({ size: 1024 * 1024 * 15 });
+
 var db = null;
 var pending = [];
 
@@ -57,7 +59,7 @@ Database.prototype._fetch = function(cb) {
 function tryLocalStorage(cb) {
   localStorage.getItem('cache', function(err, data) {
     if (err) return cb(err);
-    
+
     try {
       var tmp = JSON.parse(data);
       tmp.planes.index = lunr.Index.load(tmp.planes.index);
@@ -120,10 +122,11 @@ function tryHTTP(cb) {
       }
     }
 
-    localStorage.setItem('cache', JSON.stringify(tmp));
-
-    db = tmp;
-
-    cb();
+    var toCache = JSON.stringify(tmp);
+    localStorage.setItem('cache', toCache, function(err) {
+      if (err) return cb(err);
+      db = tmp;
+      cb();
+    });
   });
 };

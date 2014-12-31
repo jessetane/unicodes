@@ -4,11 +4,12 @@ var utf16 = require('utf16-transcoder');
 var inherits = require('inherits');
 var TableView = require('../../lib/table-view');
 var PointView = require('../code-point');
+var CodePlane = require('../code-plane/model');
 var template = require('./template.html');
 var scrollTo = require('scroll');
 
 var breakPoints = [
-  { start: 0, end: 768, cols: 3, rowHeight: 120 },
+  { start: 0, end: 768, cols: 4, rowHeight: 60 },
   { start: 768, end: Infinity, cols: 12, rowHeight: 120 },
 ];
 
@@ -26,6 +27,9 @@ function ChartView() {
 inherits(ChartView, TableView);
 
 ChartView.prototype.show = function() {
+  if (!this.planes)
+    return this.loadPlanes();
+
   var self = this;
   var hash = window.location.hash.replace(/^#/, '');
   var point = this.selected = Math.abs(parseInt(hash, 16));
@@ -49,6 +53,15 @@ ChartView.prototype.show = function() {
     var middle = rowIndex * this.rowHeight - height / 2 + this.rowHeight / 2;
     scrollTo.top(this.scroller, middle, { duration: 350 });
   }
+};
+
+ChartView.prototype.loadPlanes = function() {
+  var self = this;
+  CodePlane.search(function(err, planes) {
+    if (err) console.error(err);
+    self.planes = planes || {};
+    self.show();
+  });
 };
 
 ChartView.prototype.resize = function(evt) {

@@ -31,7 +31,13 @@ CodePlane.findByPoint = function(point, cb) {
 };
 
 CodePlane.search = function(query, cb) {
-  db.search('planes', query, Model.onsearch.bind(CodePlane, cb));
+  if (typeof query === 'function') {
+    cb = query;
+    db.read('planes', Model.onsearch.bind(CodePlane, cb));
+  }
+  else {
+    db.search('planes', query, Model.onsearch.bind(CodePlane, cb));
+  }
 };
 
 CodePlane.prototype.read = function(cb) {
