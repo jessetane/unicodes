@@ -2,7 +2,6 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 30%;
   height: 100%;
   //padding-bottom: 70px;
   background: rgba(255, 255, 255, @opacity);
@@ -13,6 +12,11 @@
   transform: translate3d(100%, 0, 0);
   &.show {
     transform: translate3d(0, 0, 0);
+  }
+
+  width: 85%;
+  @media only screen and (min-width: 768px)  {
+    width: 30%;
   }
 
   .scroller {

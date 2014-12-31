@@ -3,7 +3,6 @@
   top: 0;
   left: 0;
   z-index: 3;
-  width: 28.5%;
   height: 100%;
   background: rgba(255, 255, 255, @opacity);
   box-shadow: 2px 0px 4px rgba(0,0,0,0.1);
@@ -12,6 +11,11 @@
   transform: translate3d(-100%, 0, 0);
   &.show {
     transform: translate3d(0, 0, 0);
+  }
+
+  width: 85%;
+  @media only screen and (min-width: 768px)  {
+    width: 28.5%;
   }
 
   .scroller {

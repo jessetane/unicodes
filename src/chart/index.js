@@ -9,7 +9,7 @@ var template = require('./template.html');
 var scrollTo = require('scroll');
 
 var breakPoints = [
-  { start: 0, end: 768, cols: 4, rowHeight: 60 },
+  { start: 0, end: 768, cols: 4, rowHeight: 80 },
   { start: 768, end: Infinity, cols: 12, rowHeight: 120 },
 ];
 

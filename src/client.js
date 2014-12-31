@@ -1,4 +1,7 @@
 var router = require('uri-router');
+var fc = require('fastclick');
+
+fc(document.body);
 
 router({
   watch: 'hash',

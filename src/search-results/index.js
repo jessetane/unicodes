@@ -45,7 +45,7 @@ SearchResults.prototype.show = function(router) {
     this.debounce = setTimeout(function() {
       this.debounce = null;
 
-      start = performance.now();
+      start = +new Date;
       CodePoint.search(query, function(err, points, total) {
         if (err) console.error(err);
         else {
@@ -71,10 +71,10 @@ SearchResults.prototype.show = function(router) {
 
   function render() {
     if (query && results.length !== totalResults) {
-      meta = totalResults + ' results found (showing ' + results.length + ') in ' + ((performance.now() - start)).toPrecision(2) + ' milliseconds';
+      meta = totalResults + ' results found (showing ' + results.length + ') in ' + (+new Date - start).toPrecision(2) + ' milliseconds';
     }
     else if (query) {
-      meta = totalResults + ' results found in ' + ((performance.now() - start)).toFixed(2) + ' milliseconds';
+      meta = totalResults + ' results found in ' + (+new Date - start).toPrecision(2) + ' milliseconds';
     }
     else {
       meta = '';
