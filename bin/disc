@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-cd "$(dirname "$BASH_SOURCE")"/..
-
-source etc/env.sh
-
-mkdir -p share
-
-browserify --full-paths --debug src/client.js | discify > share/disc.html

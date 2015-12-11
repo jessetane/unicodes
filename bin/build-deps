@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-cd "$(dirname "$BASH_SOURCE")"/..
-
-source etc/env.sh
-
-npm install

@@ -1,0 +1,30 @@
+.row {
+  display: flex;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.loading:after {
+  position: absolute;
+  content: "";
+  left: 50%;
+  top: 50%;
+  height: 30px;
+  width: 30px;
+  margin: 0px auto;
+  border-left: 10px solid #DDD;
+  border-right: 10px solid #DDD;
+  border-bottom: 10px solid #DDD;
+  border-top: 10px solid rgba(0,0,0,0);
+  border-radius: 100%;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  animation: lazy-loading-keyframes 2s infinite linear;
+}
+
+@keyframes lazy-loading-keyframes {
+  from {transform: translate(-50%, -50%) rotate(0deg);}
+  to {transform: translate(-50%, -50%) rotate(359deg);}
+}

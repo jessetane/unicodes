@@ -1,0 +1,65 @@
+x-chart {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 49px);
+  font-family: serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+x-chart .row {
+  position: absolute;
+  width: 100%;
+}
+
+x-chart .col {
+  position: relative;
+  flex-grow: 1;
+  flex-basis: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-decoration: none;
+  border: 1px solid #DDD;
+  border-top: 1px solid transparent;
+  margin-left: -1px;
+  margin-top: -1px;
+  transition: box-shadow 0.2s, background-color 0.2s, border 0.2s;
+}
+
+x-chart .row:first-child .col {
+  border-top: 1px solid #DDD;
+}
+
+x-chart .col:last-child {
+  margin-right: -1px;
+}
+
+x-chart .col:hover,
+x-chart .col.selected {
+  border: 1px solid #999;
+  z-index: 1;
+}
+
+/* ios applies the hover state unpredictably */
+html.ios x-chart .col:hover {
+  border: 1px solid #DDD;
+  border-top: 1px solid transparent;
+}
+
+x-chart .col.selected {
+  border: 1px solid #BBB;
+  background-color: #FAFAFA;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+}
+
+@media (min-height: 500px) and (min-width: 500px) {
+  x-chart {
+    height: calc(100% - 69px);
+  }
+}

@@ -1,23 +1,8 @@
-var hg = require('hyperglue2');
-var utf16 = require('utf16-transcoder');
-var template = require('./template.html');
+// just a stub for now, maybe we can animate
+// this element into position on the info card...
 
-module.exports = CodePointView;
-
-function CodePointView(i) {
-  var hex = i.toString(16);
-  var units = [];
-  var string = '';
-
-  if (i < 0xD800 || i > 0xDFFF) {
-    units = utf16.encode(i);
-  }
-  
-  for (var n = 0; n < units.length; n++) {
-    string += String.fromCharCode(units[n]);
-  }
-  
-  var tmp = document.createElement('div');
-  tmp.innerHTML = '<div class="code-point"><a href="#' + hex + '"><div>' + string + '</div></a></div>';
-  this.el = tmp.firstChild;
+var CodePoint = {
+  prototype: Object.create(HTMLElement.prototype)
 }
+
+module.exports = document.registerElement('x-code-point', CodePoint)

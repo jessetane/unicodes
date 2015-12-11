@@ -1,43 +1,33 @@
 {
-  "name": "unicode",
+  "name": "unicodes",
   "version": "1.0.0",
-  "bin": {
-    "unicode": "./bin/unicode",
-    "unicode-gui": "./bin/unicode-gui"
+  "description": "Browse all of the unicodes",
+  "scripts": {
+    "dev": "dev",
+    "build": "build-js && build-css; [ \"$NODE_ENV\" = \"production\" ] && npm run minify || exit 0",
+    "minify": "cp public/build.js public/build.debug.js; uglifyjs < public/build.debug.js > public/build.js",
+    "download": "node bin/download-unicode-database.js"
   },
   "dependencies": {
-    "autoprefixer": "^4.0.0",
-    "browserify": "^8.0.3",
-    "chokidar": "^0.12.5",
-    "concat-stream": "^1.4.7",
-    "disc": "^1.3.1",
-    "ecstatic": "^0.5.8",
+    "build-css": "github:jessetane/build-css#2.0.0",
+    "build-js": "github:jessetane/build-js#2.0.0",
+    "document-register-element": "^0.5.0",
+    "escape-string-regexp": "^1.0.3",
     "fastclick": "^1.0.3",
-    "hyperglue2": "^1.1.0",
-    "hyperquest": "^1.0.1",
-    "inherits": "^2.0.1",
-    "less": "^2.1.0",
-    "localforage": "^1.2.0",
-    "lunr": "^0.5.7",
-    "merge": "^1.2.0",
-    "mkdirp": "^0.5.0",
-    "queue": "^3.0.10",
-    "scroll": "0.0.3",
-    "txtify2": "^2.0.0",
-    "uri-router": "jessetane/uri-router"
+    "hyperglue2": "^2.0.0",
+    "hyperquest": "^1.2.0",
+    "lazy-scroll": "^2.0.0",
+    "scroll": "^1.0.0",
+    "uglify-js": "^2.6.1",
+    "unicode-block-from-code-point": "^1.0.0",
+    "unicode-database-parser": "^2.0.0",
+    "uri-router": "^1.2.0"
   },
-  "browserify": {
-    "transform": [
-      [
-        "txtify2",
-        {
-          "extensions": [
-            "html"
-          ]
-        }
-      ]
-    ]
+  "devDependencies": {
+    "app-server": "github:jessetane/app-server#3.0.1",
+    "dev": "github:jessetane/dev"
   },
   "repository": "https://github.com/jessetane/unicode",
-  "author": "Jesse Tane <jesse.tane@gmail.com>"
+  "author": "Jesse Tane <jesse.tane@gmail.com>",
+  "license": "WTFPL"
 }
