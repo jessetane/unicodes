@@ -155,28 +155,7 @@ Chart.prototype._scrollToSelection = function () {
     if (Math.abs(middle - this.scrollTop) > 1000) {
       this.scrollTop = this.scrollTop < middle ? middle - 1000 : middle + 1000
     }
-    this._scrollTop = middle
-    scrollTo.top(this, middle, { duration: 350 }, function () {
-      this._scrollTop = this.scrollTop
-    }.bind(this))
-  }
-}
-
-Chart.prototype.rectForCodePoint = function (codePoint) {
-  var size = this.itemSize
-  var colCount = this.colCount
-  var row = ~~(codePoint / colCount)
-  var col = codePoint % colCount
-  var top = row * size - this.scrollTop
-  var width = this.offsetWidth / colCount
-  var left = col * width
-  return {
-    top: top,
-    bottom: top + size,
-    left: left,
-    right: left + width,
-    width: width,
-    height: size
+    scrollTo.top(this, middle, { duration: 350 })
   }
 }
 
