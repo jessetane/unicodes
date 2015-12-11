@@ -2,7 +2,7 @@ exports = module.exports = []
 exports.lookup = {}
 
 var parseUnicodeData = require('unicode-database-parser')
-var stringFromCodePoint = require('../../lib/string-from-code-point')
+var charFromCodePoint = require('../../lib/char-from-code-point')
 
 var request = new XMLHttpRequest()
 
@@ -13,7 +13,7 @@ request.addEventListener('readystatechange', function (evt) {
   var lookup = database.lookup
   data.split('\n').forEach(function (line) {
     line = parseUnicodeData(line)
-    line['String'] = stringFromCodePoint(line['Code Point'])
+    line['String'] = charFromCodePoint(line['Code Point'])
     lookup[line['Hex String']] = line
     database[database.length] = line
   })

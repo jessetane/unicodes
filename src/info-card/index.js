@@ -2,7 +2,8 @@ var router = require('uri-router')
 var render = require('hyperglue2')
 var database = require('../database')
 var blockFromCodePoint = require('unicode-block-from-code-point')
-var stringFromCodePoint = require('../../lib/string-from-code-point')
+var charFromCodePoint = require('../../lib/char-from-code-point')
+var codePointFromChar = require('../../lib/code-point-from-char')
 var utf8FromString = require('../../lib/utf8-from-string')
 
 var InfoCard = {
@@ -34,7 +35,12 @@ InfoCard.prototype.show = function (uri) {
   this._lastUri = uri
   var pathname = uri.pathname.slice(1)
   if (pathname) {
+    pathname = decodeURIComponent(pathname)
     this.codePoint = codePointFromPathname(pathname)
+    if (this.codePoint.String !== pathname) {
+      router.push('/' + this.codePoint.String, true)
+      return
+    }
     this.render()
     this.style.transform = 'translateY(0)'
   } else {
@@ -48,7 +54,7 @@ InfoCard.prototype.render = function () {
     '#string #display': codePoint.String,
     '#name': codePoint.Name || '',
     '#block': {
-      _html: '<a href="/' + codePoint.Block.start.toString(16) + '">' + codePoint.Block.name + '</a>'
+      _html: '<a href="/' + charFromCodePoint(codePoint.Block.start) + '">' + codePoint.Block.name + '</a>'
     },
     '#unicode': '0x' + codePoint['Code Point'].toString(16).toUpperCase(),
     '#javascript': renderJavaScript(codePoint),
@@ -60,17 +66,17 @@ InfoCard.prototype.render = function () {
 }
 
 function codePointFromPathname (pathname) {
-  var hex = pathname.toUpperCase()
+  var codePoint = codePointFromChar(pathname)
+  var hex = codePoint.toString(16).toUpperCase()
   while (hex.length < 4) hex = '0' + hex
-  var codePoint = database.lookup[hex]
-  if (codePoint) {
-    return codePoint
+  var data = database.lookup[hex]
+  if (data) {
+    return data
   } else {
-    codePoint = parseInt(pathname, 16)
     return {
       'Code Point': codePoint,
       'Hex String': hex,
-      'String': stringFromCodePoint(codePoint),
+      'String': charFromCodePoint(codePoint),
       'Block': blockFromCodePoint(codePoint)
     }
   }

@@ -3,7 +3,8 @@ var database = require('../database')
 var LazyScroll = require('lazy-scroll')
 var CodePoint = require('../code-point')
 var scrollTo = require('scroll')
-var stringFromCodePoint = require('../../lib/string-from-code-point')
+var charFromCodePoint = require('../../lib/char-from-code-point')
+var codePointFromChar = require('../../lib/code-point-from-char')
 var escapeRegex = require('escape-string-regexp')
 var ua = require('../ua')
 
@@ -49,7 +50,7 @@ Chart.prototype.itemAtIndex = function (index) {
   if (!this._rowTemplate) this._generateTemplate()
   var row = this._rowTemplate.cloneNode(true)
   var first = index * this.colCount
-  var col, codePoint, n, i = -1
+  var col, codePoint, n, c, i = -1
   while (++i < this.colCount) {
     n = first + i
     if (this._filter) {
@@ -57,10 +58,11 @@ Chart.prototype.itemAtIndex = function (index) {
       n = match && match['Code Point']
     }
     if (n !== undefined) {
+      c = charFromCodePoint(n)
       col = row.children[i]
-      col.href = '/' + n.toString(16)
+      col.href = '/' + c
       codePoint = col.firstElementChild
-      codePoint.textContent = stringFromCodePoint(n)
+      codePoint.textContent = c
       if (n === this._selection) {
         col.classList.add('selected')
       }
@@ -107,7 +109,7 @@ Chart.prototype.show = function (uri) {
 
   var selection = uri.pathname.slice(1) || undefined
   if (selection) {
-    selection = parseInt(selection, 16)
+    selection = codePointFromChar(decodeURIComponent(selection))
     if (selection !== this._selection || filter) {
       this._selection = selection
       selection = true
