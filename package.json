@@ -9,13 +9,10 @@
     "download": "node bin/download-unicode-database.js"
   },
   "dependencies": {
-    "build-css": "github:jessetane/build-css#2.0.0",
-    "build-js": "github:jessetane/build-js#2.0.0",
     "document-register-element": "^0.5.0",
     "escape-string-regexp": "^1.0.3",
     "fastclick": "^1.0.3",
     "hyperglue2": "^2.0.0",
-    "hyperquest": "^1.2.0",
     "lazy-scroll": "^2.0.0",
     "scroll": "^1.0.0",
     "uglify-js": "^2.6.1",
@@ -25,7 +22,10 @@
   },
   "devDependencies": {
     "app-server": "github:jessetane/app-server#3.0.1",
-    "dev": "github:jessetane/dev"
+    "build-css": "github:jessetane/build-css#2.0.0",
+    "build-js": "github:jessetane/build-js#2.0.0",
+    "dev": "github:jessetane/dev",
+    "hyperquest": "^1.2.0"
   },
   "repository": "https://github.com/jessetane/unicode",
   "author": "Jesse Tane <jesse.tane@gmail.com>",
