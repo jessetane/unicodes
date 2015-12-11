@@ -77,9 +77,12 @@ Chart.prototype.show = function (uri) {
   var filter = uri.query.filter || undefined
   if (filter && filter !== this._filter) {
     if (database.length) this._filter = filter
-    filter = new RegExp(escapeRegex(filter), 'i')
+    filter = new RegExp(escapeRegex(decodeURIComponent(filter)), 'i')
     this._filtered = database.filter(function (character) {
-      return !!filter.test(character.Name) || filter.test(character.Block && character.Block.name)
+      if (filter.test(character.Name)) return true
+      if (character.Block) {
+        return filter.test(character.Block.name)
+      }
     })
   } else if (!filter) {
     delete this._filter
