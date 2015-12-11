@@ -31,8 +31,7 @@ InfoCard.prototype.createdCallback = function () {
 }
 
 InfoCard.prototype.show = function (uri) {
-  if (!uri) uri = this._lastUri
-  this._lastUri = uri
+  if (!uri) uri = router.uri
   var pathname = uri.pathname.slice(1)
   if (pathname) {
     pathname = decodeURIComponent(pathname)

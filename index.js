@@ -17,7 +17,6 @@ var elements = [
 ]
 
 router({
-  watch: 'pathname',
   routes: [
     ['.*', function (uri) {
       elements.forEach(function (el) {

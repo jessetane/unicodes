@@ -17,7 +17,7 @@
     "scroll": "^1.0.0",
     "unicode-block-from-code-point": "^1.0.0",
     "unicode-database-parser": "^2.0.0",
-    "uri-router": "^1.2.0"
+    "uri-router": "^2.0.0"
   },
   "devDependencies": {
     "app-server": "github:jessetane/app-server#3.0.1",

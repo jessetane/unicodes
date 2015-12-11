@@ -72,8 +72,7 @@ Chart.prototype.itemAtIndex = function (index) {
 }
 
 Chart.prototype.show = function (uri) {
-  if (!uri) uri = this._lastUri
-  this._lastUri = uri
+  if (!uri) uri = router.uri
 
   var filter = uri.query.filter || undefined
   if (filter && filter !== this._filter) {
