@@ -124,6 +124,8 @@ Chart.prototype.show = function (uri) {
   this.update()
   if (selection) {
     this._scrollToSelection()
+  } else if (this._filter) {
+    this.scrollTop = 0
   }
 }
 
