@@ -7,6 +7,7 @@ require('./src/ua')
 require('./src/chart')
 require('./src/search')
 require('./src/info-card')
+require('./src/blocks')
 
 var router = require('uri-router')
 

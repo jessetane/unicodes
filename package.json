@@ -15,8 +15,8 @@
     "hyperglue2": "^2.0.0",
     "lazy-scroll": "^2.1.0",
     "scroll": "^1.0.0",
-    "unicode-block-from-code-point": "^1.0.0",
-    "unicode-database-parser": "^2.0.0",
+    "unicode-blocks": "^2.0.2",
+    "unicode-database-parser": "^2.0.1",
     "uri-router": "^2.0.0"
   },
   "devDependencies": {

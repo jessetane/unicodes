@@ -1,7 +1,7 @@
 var router = require('uri-router')
 var render = require('hyperglue2')
 var database = require('../database')
-var blockFromCodePoint = require('unicode-block-from-code-point')
+var blocks = require('unicode-blocks')
 var charFromCodePoint = require('../../lib/char-from-code-point')
 var codePointFromChar = require('../../lib/code-point-from-char')
 var utf8FromString = require('../../lib/utf8-from-string')
@@ -91,7 +91,7 @@ function codePointFromPathname (pathname) {
       'Code Point': codePoint,
       'Hex String': hex,
       'String': charFromCodePoint(codePoint),
-      'Block': blockFromCodePoint(codePoint)
+      'Block': blocks.fromCodePoint(codePoint)
     }
   }
 }

@@ -44,15 +44,15 @@ Search.prototype.createdCallback = function () {
   }
   input.addEventListener('input', function () {
     router.search({
-      filter: encodeURIComponent(input.value)
+      search: encodeURIComponent(input.value)
     })
   })
   this.searchResults = this.querySelector('x-search-results')
 }
 
 Search.prototype.show = function (uri) {
-  var filter = decodeURIComponent(uri.query.filter || '')
-  if (this.input.value !== filter) this.input.value = filter || ''
+  var search = decodeURIComponent(uri.query.search || '')
+  if (this.input.value !== search) this.input.value = search || ''
 }
 
 module.exports = document.registerElement('x-search', Search)

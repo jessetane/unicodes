@@ -5,6 +5,7 @@ var CodePoint = require('../code-point')
 var scrollTo = require('scroll')
 var charFromCodePoint = require('../../lib/char-from-code-point')
 var codePointFromChar = require('../../lib/code-point-from-char')
+var blocks = require('unicode-blocks')
 var escapeRegex = require('escape-string-regexp')
 var ua = require('../ua')
 
@@ -47,54 +48,76 @@ Chart.prototype._generateTemplate = function () {
   }
 }
 
+Chart.prototype.update = function () {
+  LazyScroll.prototype.update.call(this)
+  if (this._visible.length === 0) return
+  var middle = Math.floor(this._visible.length / 2)
+  var row = this._visible[middle]
+  var block = blocks.fromCodePoint(this.searchQuery ? row.firstCodePoint : row.lastCodePoint)
+  if (block !== this.currentBlock) {
+    this.currentBlock = block
+    this.dispatchEvent(new Event('blockchange'))
+  }
+}
+
 Chart.prototype.itemAtIndex = function (index) {
   if (!this._rowTemplate) this._generateTemplate()
   var row = this._rowTemplate.cloneNode(true)
-  var first = index * this.colCount
+  var colCount = this.colCount
+  var first = index * colCount
   var col, codePoint, n, c, i = -1
-  while (++i < this.colCount) {
+  while (++i < colCount) {
     n = first + i
-    if (this._filter) {
-      var match = this._filtered[n]
+    if (this.searchQuery) {
+      var match = this.searchResults[n]
       n = match && match['Code Point']
     }
+    col = row.children[i]
     if (n !== undefined) {
       c = charFromCodePoint(n)
-      col = row.children[i]
+      col.codePoint = n
       col.href = '/' + c
       codePoint = col.firstElementChild
       codePoint.textContent = c
       if (n === this._selection) {
         col.classList.add('selected')
       }
+    } else {
+      col.classList.add('empty')
     }
   }
+  row.firstCodePoint = first
+  row.lastCodePoint = first + colCount
   return row
 }
 
 Chart.prototype.show = function (uri) {
   if (!uri) uri = router.uri
 
-  var filter = uri.query.filter || undefined
-  if (filter && filter !== this._filter) {
-    if (database.length) this._filter = filter
-    filter = new RegExp(escapeRegex(decodeURIComponent(filter)), 'i')
-    this._filtered = database.filter(function (character) {
-      if (filter.test(character.Name)) return true
+  var searchQuery = uri.query.search || undefined
+  var searchChanged = false
+  if (searchQuery && searchQuery !== this.searchQuery) {
+    if (database.length) {
+      this.searchQuery = searchQuery
+      searchChanged = true
+    }
+    searchQuery = new RegExp(escapeRegex(decodeURIComponent(searchQuery)), 'i')
+    this.searchResults = database.filter(function (character) {
+      if (searchQuery.test(character.Name)) return true
       if (character.Block) {
-        return filter.test(character.Block.name)
+        return searchQuery.test(character.Block.name)
       }
     })
-  } else if (!filter) {
-    delete this._filter
-    delete this._filtered
-    filter = true
+  } else if (!searchQuery) {
+    delete this.searchQuery
+    delete this.searchResults
+    searchQuery = true
   }
 
   var lastItemSize = this.itemSize
   this._size = computeSize(window.innerWidth)
   this.colCount = this._size.cols
-  this.itemCount = this._filtered ? this._filtered.length : 0x10FFFF
+  this.itemCount = this.searchResults ? this.searchResults.length : 0x10FFFF
   this.itemCount = Math.ceil(this.itemCount / this.colCount)
   this.itemSize = this._size.rowHeight
 
@@ -113,7 +136,7 @@ Chart.prototype.show = function (uri) {
   var selection = uri.pathname.slice(1) || undefined
   if (selection) {
     selection = codePointFromChar(decodeURIComponent(selection))
-    if (selection !== this._selection || filter) {
+    if (selection !== this._selection || searchQuery) {
       this._selection = selection
       selection = true
     } else {
@@ -126,27 +149,27 @@ Chart.prototype.show = function (uri) {
   this.clear()
   this.update()
   if (selection) {
-    this._scrollToSelection()
-  } else if (this._filter) {
+    this.scrollToCodePoint(this._selection)
+  } else if (searchChanged) {
     this.scrollTop = 0
+    this.dispatchEvent(new Event('searchchange'))
   }
 }
 
-Chart.prototype._scrollToSelection = function () {
-  var selection = this._selection
-  if (this._filter) {
+Chart.prototype.scrollToCodePoint = function (codePoint) {
+  if (this.searchQuery) {
     var i = -1
-    while (++i < this._filtered.length) {
-      if (this._filtered[i]['Code Point'] === selection) {
-        selection = i
+    while (++i < this.searchResults.length) {
+      if (this.searchResults[i]['Code Point'] === codePoint) {
+        codePoint = i
         break
       }
     }
-    if (i === this._filtered.length) {
+    if (i === this.searchResults.length) {
       return
     }
   }
-  var rowIndex = Math.floor(selection / this.colCount)
+  var rowIndex = Math.floor(codePoint / this.colCount)
   var style = window.getComputedStyle(this)
   var paddingBottom = style.paddingBottom
   var padding = parseInt(paddingBottom.replace('px', ''), 10)
@@ -163,7 +186,6 @@ Chart.prototype._scrollToSelection = function () {
 }
 
 function computeSize (size) {
-  // magic numberz
   var r = 1 + size / 320 / 10
   var n = 64 * r
   return {

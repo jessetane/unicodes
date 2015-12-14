@@ -1,0 +1,16 @@
+x-blocks {
+  display: flex;
+  align-items: center;
+}
+
+x-blocks select {
+  margin-left: auto;
+  width: 100%;
+  max-width: 275px;
+}
+
+@media (min-width: 768px) {
+  x-blocks select {
+    min-width: 200px;
+  }
+}

@@ -24,12 +24,29 @@ x-chart .col {
   justify-content: center;
   align-items: center;
   width: 100%;
+  color: #000;
   text-decoration: none;
   border: 1px solid #DDD;
   border-top: 1px solid transparent;
   margin-left: -1px;
   margin-top: -1px;
   transition: box-shadow 0.2s, background-color 0.2s, border 0.2s;
+}
+
+x-chart .col.empty {
+  border-left: 0;
+  border-right: 0;
+}
+
+x-chart .col:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #FFF;
+  z-index: -1;
 }
 
 x-chart .row:first-child .col {
@@ -54,6 +71,9 @@ html.ios x-chart .col:hover {
 
 x-chart .col.selected {
   border: 1px solid #BBB;
+}
+
+x-chart .col.selected:before {
   background-color: #FAFAFA;
   box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
 }
