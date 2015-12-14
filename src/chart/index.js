@@ -108,10 +108,10 @@ Chart.prototype.show = function (uri) {
         return searchQuery.test(character.Block.name)
       }
     })
-  } else if (!searchQuery) {
+  } else if (this.searchQuery && !searchQuery) {
     delete this.searchQuery
     delete this.searchResults
-    searchQuery = true
+    searchChanged = true
   }
 
   var lastItemSize = this.itemSize
@@ -136,7 +136,7 @@ Chart.prototype.show = function (uri) {
   var selection = uri.pathname.slice(1) || undefined
   if (selection) {
     selection = codePointFromChar(decodeURIComponent(selection))
-    if (selection !== this._selection || searchQuery) {
+    if (selection !== this._selection || searchChanged) {
       this._selection = selection
       selection = true
     } else {
@@ -152,6 +152,8 @@ Chart.prototype.show = function (uri) {
     this.scrollToCodePoint(this._selection)
   } else if (searchChanged) {
     this.scrollTop = 0
+  }
+  if (searchChanged) {
     this.dispatchEvent(new Event('searchchange'))
   }
 }
