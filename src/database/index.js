@@ -12,6 +12,7 @@ request.addEventListener('readystatechange', function (evt) {
   var database = module.exports
   var lookup = database.lookup
   data.split('\n').forEach(function (line) {
+    if (!line) return
     line = parseUnicodeData(line)
     line['String'] = charFromCodePoint(line['Code Point'])
     lookup[line['Hex String']] = line
