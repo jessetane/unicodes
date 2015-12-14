@@ -13,7 +13,7 @@
     "escape-string-regexp": "^1.0.3",
     "fastclick": "^1.0.3",
     "hyperglue2": "^2.0.0",
-    "lazy-scroll": "^2.0.0",
+    "lazy-scroll": "^2.1.0",
     "scroll": "^1.0.0",
     "unicode-block-from-code-point": "^1.0.0",
     "unicode-database-parser": "^2.0.0",

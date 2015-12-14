@@ -17,6 +17,7 @@ var Chart = {
 
 Chart.prototype.createdCallback = function () {
   LazyScroll.prototype.createdCallback.apply(this, arguments)
+  if (ua.safari && !ua.ios) this.deferRemoval = true
   document.body.classList.remove('loading')
   window.addEventListener('databaseready', this.show.bind(this, null))
   window.addEventListener('resize', this._onresize.bind(this))
