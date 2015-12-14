@@ -22,6 +22,16 @@ Blocks.prototype.show = function () {
   if (this.searchResults !== chart.searchResults) {
     this.searchResults = chart.searchResults
     this._computeVisibleBlocks()
+  } else if (this.select.children.length > 1) {
+    var selection = this.querySelector('[selected]')
+    if (selection) {
+      selection.removeAttribute('selected')
+    }
+    if (currentBlock) {
+      var selection = this.querySelector('[value="' + currentBlock.name + '"]')
+      selection.setAttribute('selected', 'selected')
+    }
+    return
   }
   render(this, {
     'option': this.visible.map(function (block) {
