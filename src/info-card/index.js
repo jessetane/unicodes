@@ -5,6 +5,7 @@ var blockFromCodePoint = require('unicode-block-from-code-point')
 var charFromCodePoint = require('../../lib/char-from-code-point')
 var codePointFromChar = require('../../lib/code-point-from-char')
 var utf8FromString = require('../../lib/utf8-from-string')
+var ua = require('../ua')
 
 var InfoCard = {
   prototype: Object.create(HTMLElement.prototype)
@@ -19,6 +20,20 @@ InfoCard.prototype.createdCallback = function () {
       router.push('/' + window.location.search)
     }
   })
+  if (ua.ios) {
+    // workaround for buggy selection on ios
+    var display = this.querySelector('#string #display')
+    display.addEventListener('touchend', function (evt) {
+      setTimeout(function () {
+        var s = window.getSelection()
+        var r = document.createRange()
+        r.setStart(display.firstChild, 0)
+        r.setEnd(display.firstChild, 1)
+        s.removeAllRanges()
+        s.addRange(r)
+      }, 100)
+    })
+  }
   document.body.addEventListener('transitionend', function (evt) {
     if (evt.target !== this) return
     if (window.location.pathname === '/') {
