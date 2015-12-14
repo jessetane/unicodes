@@ -27,7 +27,7 @@
     "hyperquest": "^1.2.0",
     "uglify-js": "^2.6.1"
   },
-  "repository": "https://github.com/jessetane/unicode",
+  "repository": "https://github.com/jessetane/unicodes",
   "author": "Jesse Tane <jesse.tane@gmail.com>",
   "license": "WTFPL"
 }
