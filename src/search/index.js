@@ -47,6 +47,11 @@ Search.prototype.createdCallback = function () {
       search: encodeURIComponent(input.value)
     })
   })
+  input.addEventListener('keyup', function (evt) {
+    if (evt.keyCode === 13) {
+      input.blur()
+    }
+  })
   this.searchResults = this.querySelector('x-search-results')
 }
 
