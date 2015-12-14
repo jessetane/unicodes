@@ -25,10 +25,12 @@ Blocks.prototype.show = function () {
   } else if (this.select.children.length > 1) {
     var selection = this.querySelector('[selected]')
     if (selection) {
+      selection.selected = false
       selection.removeAttribute('selected')
     }
     if (currentBlock) {
       var selection = this.querySelector('[value="' + currentBlock.name + '"]')
+      selection.selected = true
       selection.setAttribute('selected', 'selected')
     }
     return
