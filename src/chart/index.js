@@ -82,12 +82,14 @@ Chart.prototype.itemAtIndex = function (index) {
       if (n === this._selection) {
         col.classList.add('selected')
       }
+      if (i === 0) {
+        row.firstCodePoint = n
+      }
     } else {
       col.classList.add('empty')
     }
   }
-  row.firstCodePoint = first
-  row.lastCodePoint = first + colCount
+  row.lastCodePoint = n
   return row
 }
 
