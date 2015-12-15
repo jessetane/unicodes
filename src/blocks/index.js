@@ -12,7 +12,7 @@ Blocks.prototype.createdCallback = function () {
   this.innerHTML = require('./index.html')
   this.select = this.querySelector('select')
   this.visible = blocks
-  this.addEventListener('change', onchange.bind(this))
+  this.addEventListener('change', onselect.bind(this))
   chart.addEventListener('blockchange', this.show.bind(this))
   chart.addEventListener('searchchange', this.show.bind(this))
 }
@@ -64,19 +64,17 @@ Blocks.prototype._computeVisibleBlocks = function () {
   }
 }
 
-function onchange (evt) {
+function onselect (evt) {
   var codePoint = null
   var selection = this.select.value
   if (chart.searchResults) {
-    chart.searchResults.forEach(function (cp) {
-      if (codePoint === null && cp.Block.name === selection) {
-        codePoint = cp['Code Point']
-      }
-    })
+    codePoint = chart.searchResults.reduce(function (p, n) {
+      return !p && n.Block.name === selection ? n['Code Point'] : p
+    }, null)
   } else {
     codePoint = blocks.reduce(function (p, n) {
-      return n.name === selection ? n : p
-    }, null).start
+      return n.name === selection ? n.start : p
+    }, null)
   }
   chart.scrollToCodePoint(codePoint)
 }
