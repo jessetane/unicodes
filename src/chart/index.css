@@ -33,11 +33,6 @@ x-chart .col {
   transition: box-shadow 0.2s, background-color 0.2s, border 0.2s;
 }
 
-x-chart .col.empty {
-  border-left: 0;
-  border-right: 0;
-}
-
 x-chart .col:before {
   content: "";
   position: absolute;
@@ -61,6 +56,12 @@ x-chart .col:hover,
 x-chart .col.selected {
   border: 1px solid #999;
   z-index: 1;
+}
+
+x-chart .col.empty {
+  pointer-events: none;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
 }
 
 /* ios applies the hover state unpredictably */

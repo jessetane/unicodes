@@ -1,6 +1,5 @@
 x-search {
-  flex-basis: 100%;
-  flex-shrink: 1;
+  flex-grow: 1;
   display: flex;
 }
 

@@ -1,12 +1,13 @@
 x-blocks {
+  flex-basis: 55%;
   display: flex;
   align-items: center;
+  max-width: 275px;
 }
 
 x-blocks select {
   margin-left: auto;
   width: 100%;
-  max-width: 275px;
 }
 
 @media (min-width: 768px) {
