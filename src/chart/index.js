@@ -76,7 +76,7 @@ Chart.prototype.itemAtIndex = function (index) {
     if (n !== undefined) {
       c = charFromCodePoint(n)
       col.codePoint = n
-      col.href = '/' + c
+      col.href = '/' + (n === 0 ? 'NULL' : encodeURIComponent(c))
       codePoint = col.firstElementChild
       codePoint.textContent = c
       if (n === this._selection) {
@@ -137,7 +137,9 @@ Chart.prototype.show = function (uri) {
 
   var selection = uri.pathname.slice(1) || undefined
   if (selection) {
-    selection = codePointFromChar(decodeURIComponent(selection))
+    selection = decodeURIComponent(selection)
+    if (selection === 'NULL') selection = '\x00'
+    selection = codePointFromChar(selection)
     if (selection !== this._selection || searchChanged) {
       this._selection = selection
       selection = true

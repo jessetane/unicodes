@@ -50,6 +50,7 @@ InfoCard.prototype.show = function (uri) {
   var pathname = uri.pathname.slice(1)
   if (pathname) {
     pathname = decodeURIComponent(pathname)
+    if (pathname === 'NULL') pathname = '\x00'
     this.codePoint = codePointFromPathname(pathname)
     if (this.codePoint.String !== pathname) {
       router.push('/' + this.codePoint.String, true)
@@ -64,19 +65,26 @@ InfoCard.prototype.show = function (uri) {
 
 InfoCard.prototype.render = function () {
   var codePoint = this.codePoint
-  render(this, codePoint ? {
-    '#string #display': codePoint.String,
-    '#name': codePoint.Name || '',
-    '#block': {
-      _html: '<a href="/' + charFromCodePoint(codePoint.Block.start) + '">' + codePoint.Block.name + '</a>'
-    },
-    '#unicode': '0x' + codePoint['Code Point'].toString(16).toUpperCase(),
-    '#javascript': renderJavaScript(codePoint),
-    '#utf8': renderUtf8(codePoint)
-  } : {
-    '.field': '',
-    '#string #display': '?'
-  })
+  if (codePoint) {
+    var blockStart = codePoint.Block.start
+    var url = blockStart === 0 ? 'NULL' : charFromCodePoint(blockStart)
+    codePoint = {
+      '#string #display': codePoint.String,
+      '#name': codePoint.Name || '',
+      '#block': {
+        _html: '<a href="/' + url + '">' + codePoint.Block.name + '</a>'
+      },
+      '#unicode': '0x' + codePoint['Code Point'].toString(16).toUpperCase(),
+      '#javascript': renderJavaScript(codePoint),
+      '#utf8': renderUtf8(codePoint)
+    }
+  } else {
+    codePoint = {
+      '.field': '',
+      '#string #display': '?'
+    }
+  }
+  render(this, codePoint)
 }
 
 function codePointFromPathname (pathname) {
