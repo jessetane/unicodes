@@ -62,7 +62,7 @@ InfoCard.prototype.render = function () {
   if (codePoint) {
     var name = codePoint.Name
     var category = codePoint['General Category']
-    var url = encodeURI(codePoint['Code Point'])
+    var url = encodeURI(codePoint.Block.start)
     var unicode = codePoint['Code Point'].toString(16).toUpperCase()
     while (unicode.length < 4) unicode = '0' + unicode
     codePoint = {
