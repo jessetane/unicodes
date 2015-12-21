@@ -26,8 +26,8 @@ x-info-card #card {
 }
 
 x-info-card #card #scroller {
-  padding-left: 25px;
-  padding-right: 25px;
+  padding-left: 30px;
+  padding-right: 30px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
