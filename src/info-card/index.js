@@ -34,8 +34,7 @@ InfoCard.prototype.createdCallback = function () {
       }, 100)
     })
   }
-  document.body.addEventListener('transitionend', function (evt) {
-    if (evt.target !== this) return
+  this.addEventListener('transitionend', function (evt) {
     if (window.location.pathname === '/') {
       delete this.codePoint
       this.querySelector('#scroller').scrollTop = 0
