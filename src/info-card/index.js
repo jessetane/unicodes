@@ -88,7 +88,7 @@ InfoCard.prototype.render = function () {
     }
   } else {
     codePoint = {
-      '#string #display': '?',
+      '#string #display': '\uFFFD',
       '.field': ''
     }
   }
