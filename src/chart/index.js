@@ -3,8 +3,9 @@ var database = require('../database')
 var LazyScroll = require('lazy-scroll')
 var CodePoint = require('../code-point')
 var scrollTo = require('scroll')
+var decodeURI = require('../uri-transcoder').decode
+var encodeURI = require('../uri-transcoder').encode
 var charFromCodePoint = require('../../lib/char-from-code-point')
-var codePointFromChar = require('../../lib/code-point-from-char')
 var blocks = require('unicode-blocks')
 var escapeRegex = require('escape-string-regexp')
 var ua = require('../ua')
@@ -75,8 +76,7 @@ Chart.prototype.itemAtIndex = function (index) {
     col = row.children[i]
     if (n !== undefined) {
       c = charFromCodePoint(n)
-      col.codePoint = n
-      col.href = '/' + (n === 0 ? 'NULL' : encodeURIComponent(c))
+      col.href = '/' + encodeURI(n, c)
       codePoint = col.firstElementChild
       codePoint.textContent = c
       if (n === this._selection) {
@@ -137,9 +137,7 @@ Chart.prototype.show = function (uri) {
 
   var selection = uri.pathname.slice(1) || undefined
   if (selection) {
-    selection = decodeURIComponent(selection)
-    if (selection === 'NULL') selection = '\x00'
-    selection = codePointFromChar(selection)
+    selection = decodeURI(selection)
     if (selection !== this._selection || searchChanged) {
       this._selection = selection
       selection = true

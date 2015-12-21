@@ -2,8 +2,9 @@ var router = require('uri-router')
 var render = require('hyperglue2')
 var database = require('../database')
 var blocks = require('unicode-blocks')
+var decodeURI = require('../uri-transcoder').decode
+var encodeURI = require('../uri-transcoder').encode
 var charFromCodePoint = require('../../lib/char-from-code-point')
-var codePointFromChar = require('../../lib/code-point-from-char')
 var utf8FromString = require('../../lib/utf8-from-string')
 var ua = require('../ua')
 
@@ -48,13 +49,7 @@ InfoCard.prototype.show = function (uri) {
   if (!uri) uri = router.uri
   var pathname = uri.pathname.slice(1)
   if (pathname) {
-    pathname = decodeURIComponent(pathname)
-    if (pathname === 'NULL') pathname = '\x00'
     this.codePoint = codePointFromPathname(pathname)
-    if (this.codePoint.String !== pathname) {
-      router.push('/' + this.codePoint.String, true)
-      return
-    }
     this.render()
     this.style.transform = 'translateY(0)'
   } else {
@@ -67,8 +62,7 @@ InfoCard.prototype.render = function () {
   if (codePoint) {
     var name = codePoint.Name
     var category = codePoint['General Category']
-    var blockStart = codePoint.Block.start
-    var url = blockStart === 0 ? 'NULL' : charFromCodePoint(blockStart)
+    var url = encodeURI(codePoint['Code Point'])
     var unicode = codePoint['Code Point'].toString(16).toUpperCase()
     while (unicode.length < 4) unicode = '0' + unicode
     codePoint = {
@@ -102,7 +96,7 @@ InfoCard.prototype.render = function () {
 }
 
 function codePointFromPathname (pathname) {
-  var codePoint = codePointFromChar(pathname)
+  var codePoint = decodeURI(pathname)
   var hex = codePoint.toString(16).toUpperCase()
   while (hex.length < 4) hex = '0' + hex
   var data = database.lookup[hex]
