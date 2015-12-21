@@ -1,4 +1,3 @@
-var router = require('uri-router')
 var render = require('hyperglue2')
 var blocks = require('unicode-blocks')
 
@@ -29,7 +28,7 @@ Blocks.prototype.show = function () {
       selection.removeAttribute('selected')
     }
     if (currentBlock) {
-      var selection = this.querySelector('[value="' + currentBlock.name + '"]')
+      selection = this.querySelector('[value="' + currentBlock.name + '"]')
       selection.selected = true
       selection.setAttribute('selected', 'selected')
     }
