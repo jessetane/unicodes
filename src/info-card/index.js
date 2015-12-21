@@ -66,22 +66,37 @@ InfoCard.prototype.show = function (uri) {
 InfoCard.prototype.render = function () {
   var codePoint = this.codePoint
   if (codePoint) {
+    var name = codePoint.Name
+    var category = codePoint['General Category']
     var blockStart = codePoint.Block.start
     var url = blockStart === 0 ? 'NULL' : charFromCodePoint(blockStart)
+    var unicode = codePoint['Code Point'].toString(16).toUpperCase()
+    while (unicode.length < 4) unicode = '0' + unicode
     codePoint = {
       '#string #display': codePoint.String,
-      '#name': codePoint.Name || '',
-      '#block': {
+      '#name': {
+        '.field': name,
+        _class: {
+          hidden: !name
+        }
+      },
+      '#description': {
+        '.field': category && category.description,
+        _class: {
+          hidden: !category
+        }
+      },
+      '#block .field': {
         _html: '<a href="/' + url + '">' + codePoint.Block.name + '</a>'
       },
-      '#unicode': '0x' + codePoint['Code Point'].toString(16).toUpperCase(),
-      '#javascript': renderJavaScript(codePoint),
-      '#utf8': renderUtf8(codePoint)
+      '#unicode .field': 'U+' + unicode,
+      '#javascript .field': renderJavaScript(codePoint),
+      '#utf8 .field': renderUtf8(codePoint)
     }
   } else {
     codePoint = {
-      '.field': '',
-      '#string #display': '?'
+      '#string #display': '?',
+      '.field': ''
     }
   }
   render(this, codePoint)
@@ -93,6 +108,11 @@ function codePointFromPathname (pathname) {
   while (hex.length < 4) hex = '0' + hex
   var data = database.lookup[hex]
   if (data) {
+    var name = data['Name']
+    if (!name || name.indexOf('<') === 0) {
+      name = data['Unicode 1 Name']
+      if (name) data['Name'] = name
+    }
     return data
   } else {
     return {

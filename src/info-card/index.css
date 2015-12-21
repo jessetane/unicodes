@@ -26,8 +26,8 @@ x-info-card #card {
 }
 
 x-info-card #card #scroller {
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 25px;
+  padding-right: 25px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -69,19 +69,19 @@ x-info-card #details table td {
   vertical-align: baseline;
 }
 
-x-info-card #details table td.label {
+x-info-card #details table .label {
   text-align: right;
   padding-right: 8px;
   font-size: 12px;
 }
 
-x-info-card #details table td.field {
+x-info-card #details table .field {
   line-height: 1.5;
 }
 
-x-info-card #details table td#unicode,
-x-info-card #details table td#utf8,
-x-info-card #details table td#javascript {
+x-info-card #details table #unicode .field,
+x-info-card #details table #utf8 .field,
+x-info-card #details table #javascript .field {
   font-family: monospace;
   font-size: 16px;
 }
