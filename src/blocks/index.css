@@ -6,6 +6,7 @@ x-blocks {
 }
 
 x-blocks select {
+  font-size: 12px;
   margin-left: auto;
   width: 100%;
 }
@@ -13,5 +14,11 @@ x-blocks select {
 @media (min-width: 768px) {
   x-blocks select {
     min-width: 200px;
+  }
+}
+
+@media (min-height: 500px) and (min-width: 500px) {
+  x-blocks select {
+    font-size: 16px;
   }
 }
