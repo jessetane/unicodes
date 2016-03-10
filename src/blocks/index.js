@@ -35,6 +35,9 @@ Blocks.prototype.show = function () {
     return
   }
   render(this, {
+    _attr: {
+      style: self === top ? null : 'pointer-events:none;'
+    },
     'option': this.visible.map(function (block) {
       return {
         _text: block.name,
