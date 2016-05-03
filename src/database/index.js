@@ -21,5 +21,5 @@ request.addEventListener('readystatechange', function (evt) {
   window.dispatchEvent(new Event('databaseready'))
 })
 
-request.open('GET', 'UnicodeData.txt', true)
+request.open('GET', '/UnicodeData.txt', true)
 request.send()
