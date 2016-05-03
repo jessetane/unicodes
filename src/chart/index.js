@@ -10,8 +10,10 @@ var blocks = require('unicode-blocks')
 var escapeRegex = require('escape-string-regexp')
 var ua = require('../ua')
 
-var styleSheet = document.styleSheets[0]
-styleSheet._dynamicStart = styleSheet.cssRules.length
+var styleSheet = document.createElement('style')
+styleSheet.appendChild(document.createTextNode(''))
+document.head.appendChild(styleSheet)
+styleSheet = styleSheet.sheet
 
 var Chart = {
   prototype: Object.create(LazyScroll.prototype)
@@ -124,7 +126,7 @@ Chart.prototype.show = function (uri) {
   this.itemSize = this._size.rowHeight
 
   if (this.itemSize !== lastItemSize) {
-    while (styleSheet.cssRules.length > styleSheet._dynamicStart) {
+    while (styleSheet.cssRules.length) {
       styleSheet.deleteRule(styleSheet.cssRules.length - 1)
     }
     styleSheet.insertRule('x-chart .row { height: ' + this._size.rowHeight + 'px }', styleSheet.cssRules.length)
