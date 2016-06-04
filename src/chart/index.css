@@ -18,12 +18,11 @@ x-chart .row {
 
 x-chart .col {
   position: relative;
-  flex-grow: 1;
-  flex-basis: 0;
+  flex-basis: 100%;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
   color: #000;
   text-decoration: none;
   border: 1px solid #DDD;
