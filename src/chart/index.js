@@ -5,7 +5,6 @@ var CodePoint = require('../code-point')
 var scrollTo = require('scroll')
 var decodeURI = require('../uri-transcoder').decode
 var encodeURI = require('../uri-transcoder').encode
-var charFromCodePoint = require('../../lib/char-from-code-point')
 var blocks = require('unicode-blocks')
 var escapeRegex = require('escape-string-regexp')
 var ua = require('../ua')
@@ -84,7 +83,7 @@ Chart.prototype.itemAtIndex = function (index) {
   var row = this._rowTemplate.cloneNode(true)
   var colCount = this.colCount
   var first = index * colCount
-  var col, codePoint, n, i = -1
+  var col, codePoint, char, surrogate, n, i = -1
   while (++i < colCount) {
     n = first + i
     if (this.searchQuery) {
@@ -94,7 +93,14 @@ Chart.prototype.itemAtIndex = function (index) {
     col = row.children[i]
     if (n !== undefined) {
       col.n = n
-      col.c = charFromCodePoint(n)
+      if (n > 0xFFFF) {
+        char = n -= 0x10000
+        surrogate = char >>> 10 & 0x3FF | 0xD800
+        char = 0xDC00 | char & 0x3FF
+        col.c = String.fromCharCode(surrogate) + String.fromCharCode(char)
+      } else {
+        col.c = String.fromCharCode(n)
+      }
       codePoint = col.firstElementChild
       codePoint.textContent = col.c
       if (i === 0) {
