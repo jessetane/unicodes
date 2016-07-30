@@ -163,7 +163,9 @@ Chart.prototype.show = function (uri) {
     delete this._selection
   }
 
-  this.clear()
+  if (searchChanged) {
+    this.clear()
+  }
   this.update()
   this.updateMeta()
   if (selection) {
