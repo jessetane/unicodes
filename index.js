@@ -1,6 +1,5 @@
 // shims
 require('document-register-element')
-require('fastclick')(document.body)
 require('./src/ua')
 
 // custom elements
