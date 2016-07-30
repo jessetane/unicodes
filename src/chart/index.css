@@ -56,12 +56,6 @@ x-chart .col.selected {
   z-index: 1;
 }
 
-x-chart .col.empty {
-  pointer-events: none;
-  border-left: 1px solid transparent;
-  border-right: 1px solid transparent;
-}
-
 /* ios applies the hover state unpredictably */
 html.ios x-chart .col:hover {
   border: 1px solid #DDD;
@@ -71,6 +65,12 @@ html.ios x-chart .col:hover {
 x-chart .col.selected:before {
   background-color: #FAFAFA;
   box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+}
+
+x-chart .col.empty {
+  pointer-events: none;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
 }
 
 @media (min-height: 500px) and (min-width: 500px) {
