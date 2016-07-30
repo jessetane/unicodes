@@ -31,6 +31,7 @@ Chart.prototype.createdCallback = function () {
       router.push(evt.target.pathname + window.location.search)
     }
   })
+  this.addEventListener('scrollend', this.updateMeta.bind(this))
 }
 
 Chart.prototype._onresize = function () {
@@ -63,12 +64,27 @@ Chart.prototype.update = function () {
   }
 }
 
+Chart.prototype.updateMeta = function () {
+  var selection = this._selection
+  Array.prototype.slice.call(
+    this.querySelectorAll('.col')
+  ).forEach(function (col) {
+    if (col.n === undefined) return
+    col.href = '/' + encodeURI(col.n, col.c)
+    if (col.n === selection) {
+      col.classList.add('selected')
+    } else {
+      col.classList.remove('selected')
+    }
+  })
+}
+
 Chart.prototype.itemAtIndex = function (index) {
   if (!this._rowTemplate) this._generateTemplate()
   var row = this._rowTemplate.cloneNode(true)
   var colCount = this.colCount
   var first = index * colCount
-  var col, codePoint, n, c, i = -1
+  var col, codePoint, n, i = -1
   while (++i < colCount) {
     n = first + i
     if (this.searchQuery) {
@@ -77,13 +93,10 @@ Chart.prototype.itemAtIndex = function (index) {
     }
     col = row.children[i]
     if (n !== undefined) {
-      c = charFromCodePoint(n)
-      col.href = '/' + encodeURI(n, c)
+      col.n = n
+      col.c = charFromCodePoint(n)
       codePoint = col.firstElementChild
-      codePoint.textContent = c
-      if (n === this._selection) {
-        col.classList.add('selected')
-      }
+      codePoint.textContent = col.c
       if (i === 0) {
         row.firstCodePoint = n
       }
@@ -152,6 +165,7 @@ Chart.prototype.show = function (uri) {
 
   this.clear()
   this.update()
+  this.updateMeta()
   if (selection) {
     this.scrollToCodePoint(this._selection)
   } else if (searchChanged) {
