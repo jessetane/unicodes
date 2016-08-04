@@ -35,6 +35,7 @@ Chart.prototype.createdCallback = function () {
 
 Chart.prototype._onresize = function () {
   delete this._rowTemplate
+  this.clear()
   this.show()
 }
 
