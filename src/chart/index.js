@@ -95,7 +95,7 @@ Chart.prototype.itemAtIndex = function (index) {
     if (n !== undefined) {
       col.n = n
       if (n > 0xFFFF) {
-        char = n -= 0x10000
+        char = n - 0x10000
         surrogate = char >>> 10 & 0x3FF | 0xD800
         char = 0xDC00 | char & 0x3FF
         col.c = String.fromCharCode(surrogate) + String.fromCharCode(char)
