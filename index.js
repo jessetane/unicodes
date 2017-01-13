@@ -2,6 +2,22 @@
 require('document-register-element')
 require('./src/ua')
 
+// analytics
+var gaid = process.env.GOOGLE_ANALYTICS
+window.GoogleAnalyticsObject = 'GoogleAnalytics'
+window.GoogleAnalytics = function () {
+  window.GoogleAnalytics.q.push(arguments)
+}
+GoogleAnalytics.q = []
+GoogleAnalytics.l = 1 * new Date()
+GoogleAnalytics('create', gaid, 'auto')
+if (gaid) {
+  var script = document.createElement('script')
+  script.async = 1
+  script.src = 'https://www.google-analytics.com/analytics.js';
+  document.body.appendChild(script)
+}
+
 // custom elements
 require('./src/chart')
 require('./src/search')
@@ -21,6 +37,7 @@ router({
     ['.*', function (uri) {
       elements.forEach(function (el) {
         el.show(uri)
+        GoogleAnalytics('send', 'pageview')
       })
     }]
   ]
