@@ -1,0 +1,13 @@
+CACHE MANIFEST
+# 1
+
+CACHE:
+# application
+/index.html
+/build.css
+/build.js
+/UnicodeData.txt
+/close.svg
+
+NETWORK:
+*
