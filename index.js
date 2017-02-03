@@ -1,6 +1,7 @@
 // shims
 require('document-register-element')
 require('./src/ua')
+require('./src/ios-prevent-body-scroll')
 
 // analytics
 var gaid = process.env.GOOGLE_ANALYTICS
