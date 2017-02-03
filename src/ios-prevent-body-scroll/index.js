@@ -3,10 +3,10 @@ var ua = require('../ua')
 if (ua.ios) {
   var threshold = 5
   var scroller = document.querySelector('x-chart')
-  document.documentElement.addEventListener('touchstart', evt => {
+  document.documentElement.addEventListener('touchstart', function (evt) {
     touchstart = evt.touches[0]
   })
-  document.documentElement.addEventListener('touchmove', evt => {
+  document.documentElement.addEventListener('touchmove', function (evt) {
     var touch = evt.touches[0]
     var scrollHeight = scroller.scrollHeight - scroller.offsetHeight
     var scrollTop = scroller.scrollTop
