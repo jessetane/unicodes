@@ -20,7 +20,7 @@
     "uglify-js": "^2.6.2",
     "unicode-blocks": "^2.0.2",
     "unicode-database-parser": "^2.0.1",
-    "uri-router": "^2.0.0"
+    "uri-router": "^3.0.5"
   },
   "devDependencies": {
     "dev": "github:jessetane/dev#2.0.0"
